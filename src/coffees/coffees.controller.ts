@@ -1,6 +1,8 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from "@nestjs/common";
 import { query } from "express";
 import { CoffeesService } from "./coffees.service";
+import { CreateCoffeeDto } from "./dto/create-coffee.dto";
+import { UpdateCoffeeDto } from "./dto/update-coffee.dto";
 
 @Controller('coffees')
 export class CoffeesController {
@@ -10,30 +12,26 @@ export class CoffeesController {
   findAll(@Query() paginationQuery){
     //const {limit, offset} = paginationQuery
     return this.coffeeServices.findAll()
-    //return `Only Limited Coffees:: ${limit} Offset::${offset}`
   }
 
   @Get(':id')
   findOne(@Param('id') id: string){
     return this.coffeeServices.findOne(id);
-    //return `Few Coffees ${id}`
   }
 
   @Post()
-  createOne(@Body() body){
-    return this.coffeeServices.create(body)
-    //return `Created Coffees ${JSON.stringify(body)}`
+  createOne(@Body() createCoffeeDto: CreateCoffeeDto){
+    console.log(createCoffeeDto instanceof CreateCoffeeDto)
+    return this.coffeeServices.create(createCoffeeDto)
   }
 
   @Patch(':id')
-  updateOne(@Param('id') id: string, @Body() body){
-    return this.coffeeServices.update(id, body);
-    //return `This action updates ${id} coffee`;
+  updateOne(@Param('id') id: string, @Body() updateCoffeeDto: UpdateCoffeeDto){
+    return this.coffeeServices.update(id, updateCoffeeDto);
   }
 
   @Delete(':id')
   deleteOne(@Param('id') id: string){
     return this.coffeeServices.remove(id);
-    //return `This action removes ${id} coffee`;
   }
 }
